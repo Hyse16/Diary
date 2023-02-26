@@ -24,7 +24,7 @@ public class Album {
     private String albumName;
 
 
-    @Column(name = "created_at", nullable = false, unique = true)
+    @Column(name = "created_at", unique = false, nullable = true)
     @CreationTimestamp
     private LocalDateTime createdAt;
 
