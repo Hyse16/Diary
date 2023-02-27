@@ -1,7 +1,10 @@
 package com.project.Diary.service;
 
 import com.project.Diary.domain.Album;
+import com.project.Diary.domain.Photo;
+import com.project.Diary.dto.AlbumDto;
 import com.project.Diary.repository.AlbumRepository;
+import com.project.Diary.repository.PhotoRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,6 +22,9 @@ class AlbumServiceTest {
     @Autowired
     AlbumService albumService;
 
+    @Autowired
+    PhotoRepository photoRepository;
+
     @Test
     public void getAlbumTest() {
         Album album = Album.builder()
@@ -27,7 +33,7 @@ class AlbumServiceTest {
 
         albumRepository.save(album);
 
-        Album findAlbum = albumService.getAlbumId(album.getAlbumId());
+        AlbumDto findAlbum = albumService.getAlbumId(album.getAlbumId());
         assertEquals("test", findAlbum.getAlbumName());
     }
 
@@ -40,7 +46,36 @@ class AlbumServiceTest {
 
         albumRepository.save(album);
 
-        Album res = albumService.getAlbumName(album.getAlbumName());
+        AlbumDto res = albumService.getAlbumName(album.getAlbumName());
         assertEquals("test1",res.getAlbumName());
+    }
+
+    @Test
+    public void PhotoCountTest() {
+        Album album = Album.builder()
+                .albumName("test")
+                .build();
+        Album savedAlbum = albumRepository.save(album);
+
+
+        Photo photo = Photo.builder()
+                .fileName("testPhotoName1")
+                .album(savedAlbum)
+                .build();
+        photoRepository.save(photo);
+
+
+        Photo photo2 = Photo.builder()
+                .fileName("testPhotoName2")
+                .album(savedAlbum)
+                .build();
+
+        photoRepository.save(photo2);
+
+
+        int count = photoRepository.countByAlbum_AlbumId(savedAlbum.getAlbumId());
+        assertEquals(2, count);
+
+
     }
 }

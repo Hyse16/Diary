@@ -4,6 +4,9 @@ spring:
     url: jdbc:mysql://localhost:3306/Diary
     username: root
     password: aa1237113
+  devtools:
+    livereload:
+      enabled: true
 
   jpa:
     hibernate:
@@ -11,3 +14,4 @@ spring:
       use-new-id-generator-mappings: true
     generate-ddl: true
     show-sql: true
+
